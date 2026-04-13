@@ -39,6 +39,7 @@ python -m client.client
 
 ---
 ## 📸Demo
+
 1. Server
 <img width="1043" height="722" alt="image" src="https://github.com/user-attachments/assets/0ffdf400-0a7b-4feb-a703-cfd27b7b09ec" />
 
@@ -49,6 +50,7 @@ python -m client.client
 <img width="950" height="545" alt="image" src="https://github.com/user-attachments/assets/28154cd1-ca90-4c54-95d5-914af7440821" />
 
 ## 🔐 Upcoming Phases
+- GUI
 - AES Encryption (message-level security)
 - RSA Key Exchange
 - Diffie-Hellman Secure Key Generation
