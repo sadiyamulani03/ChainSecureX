@@ -50,6 +50,7 @@ python -m client.client
 
 ---
 ## 📸Demo
+
 Phase 1:-
 1. Server
 <img width="1043" height="722" alt="image" src="https://github.com/user-attachments/assets/0ffdf400-0a7b-4feb-a703-cfd27b7b09ec" />
