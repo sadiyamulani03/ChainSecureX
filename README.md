@@ -1,8 +1,10 @@
 # 🔐 ChainSecureX – Secure Communication System
 
-A multi-phase project focused on building a **secure, scalable communication system** using networking, cryptography, and blockchain concepts.
+ChainSecureX is a multi-phase project focused on building a **secure and user-friendly communication system** using networking, modern UI, and advanced cryptography.
 
 ---
+
+## 🚀 Features Implemented:-
 
 ### 🔹 Phase 1: Multi-Client Chat System (CLI)
 - TCP socket-based communication
@@ -16,37 +18,57 @@ A multi-phase project focused on building a **secure, scalable communication sys
 - Timestamped messages
 - Interactive input field
 
----
-
-### ⚙️ Features
-- Multi-client support using threading
-- TCP socket-based communication
-- Structured message protocol (JSON-based)
-- Real-time message broadcasting
+### 🔹 Phase 3: Secure Communication Layer (Hybrid Cryptography)
+- AES-based message encryption
+- RSA-based secure key exchange
+- Hybrid encryption model (AES + RSA)
+- End-to-end encrypted communication
 
 ---
 
-## 🧠 Architecture
-Client ↔ Server ↔ Multiple Clients
+## 💻 Tech Stack
+- Python
+- Socket Programming
+- Threading
+- CustomTkinter (GUI)
+- AES Encryption (PyCryptodome)
+- RSA Cryptography
+
+---
+
+## 📁 Project Structure
+
+ChainSecureX/
+│── server/
+│   └── server.py
+│
+│── client/
+│   └── client.py
+│
+│── utils/
+│   ├── protocol.py
+│   └── crypto.py
 
 ---
 
 ## ▶️ How to Run
 
-### Start Server
+### 1. Install dependencies
+pip install customtkinter pycryptodome
+
+### 2. Start server
 python -m server.server
 
-### Start Client(s)
+### 3. Start client(s)
 python -m client.client
 
 ---
 
-## 📌 Tech Stack
-- Python
-- Socket Programming
-- Threading- Socket Programming
-- CustomTkinter (GUI)
-- JSON (Message Protocol)
+## 🔐 Security Overview
+- AES is used for fast message encryption
+- RSA is used for secure AES key exchange
+- Messages are encrypted end-to-end
+- Server only relays encrypted data
 
 ---
 ## 📸Demo
@@ -67,10 +89,12 @@ Phase 2:-
 
 2. Clients
    <img width="1911" height="995" alt="Screenshot 2026-04-11 214201" src="https://github.com/user-attachments/assets/2d409930-e770-4dd4-ba7d-43faa927043b" />
-   
+
+Phase 3:-
+<img width="992" height="705" alt="image" src="https://github.com/user-attachments/assets/6e13c502-1060-4a9e-8e2c-c3f11e1c3418" />
+
+
 ## 🔐 Upcoming Phases
-- AES Encryption (message-level security)
-- RSA Key Exchange
 - Diffie-Hellman Secure Key Generation
 - Message Hashing & Integrity
 - Authentication System
