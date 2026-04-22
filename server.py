@@ -8,7 +8,6 @@ PORT = 5051
 
 clients = []
 
-# 🔐 SINGLE shared AES key
 GLOBAL_AES_KEY = get_random_bytes(16)
 
 
@@ -27,11 +26,9 @@ def handle_client(conn, addr):
     try:
         from Crypto.PublicKey import RSA
 
-        # Receive public key
         client_pub_key_data = conn.recv(4096)
         client_pub_key = RSA.import_key(client_pub_key_data)
 
-        # Encrypt SAME AES key for every client
         encrypted_aes_key = encrypt_aes_key(GLOBAL_AES_KEY, client_pub_key)
 
         conn.send(encrypted_aes_key)
