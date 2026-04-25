@@ -10,6 +10,7 @@ from utils.crypto import (
     encrypt_message,
     decrypt_message
 )
+from utils.diffie_hellman import generate_private_key, generate_public_key, generate_shared_key
 
 HOST = '127.0.0.1'
 PORT = 5051
@@ -26,20 +27,30 @@ class ChatApp:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((HOST, PORT))
 
-        # 🔐 RSA Key Generation
+        # ---------------- RSA ---------------- #
         self.private_key, self.public_key = generate_rsa_keys()
-
-        # 🔐 Send public key to server
         self.client.send(self.public_key.export_key())
 
-        # 🔐 Receive encrypted AES key
         encrypted_aes = self.client.recv(4096)
-
-        # 🔐 Decrypt AES key
         self.aes_key = decrypt_aes_key(encrypted_aes, self.private_key)
 
         print("Secure connection established")
 
+        # ---------------- DIFFIE-HELLMAN ---------------- #
+        client_private = generate_private_key()
+        client_public = generate_public_key(client_private)
+
+        # Receive server public key
+        server_public = int(self.client.recv(1024).decode())
+
+        # Send client public key
+        self.client.send(str(client_public).encode())
+
+        shared_key = generate_shared_key(server_public, client_private)
+
+        print(f"DH Shared Key (Client): {shared_key}")
+
+        # ---------------- UI ---------------- #
         self.setup_ui()
         threading.Thread(target=self.receive_messages, daemon=True).start()
 
