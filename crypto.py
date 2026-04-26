@@ -2,13 +2,16 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
+from Crypto.Signature import pkcs1_15
+from Crypto.Hash import SHA256
 import base64
+import hashlib
+
+# ---------------- RSA ---------------- #
 
 def generate_rsa_keys():
     key = RSA.generate(2048)
-    private_key = key
-    public_key = key.publickey()
-    return private_key, public_key
+    return key, key.publickey()
 
 def encrypt_aes_key(aes_key, public_key):
     cipher = PKCS1_OAEP.new(public_key)
@@ -17,6 +20,22 @@ def encrypt_aes_key(aes_key, public_key):
 def decrypt_aes_key(encrypted_key, private_key):
     cipher = PKCS1_OAEP.new(private_key)
     return cipher.decrypt(encrypted_key)
+
+# ---------------- SIGNATURE ---------------- #
+
+def sign_message(message: bytes, private_key):
+    h = SHA256.new(message)
+    return pkcs1_15.new(private_key).sign(h)
+
+def verify_signature(message: bytes, signature: bytes, public_key):
+    h = SHA256.new(message)
+    try:
+        pkcs1_15.new(public_key).verify(h, signature)
+        return True
+    except:
+        return False
+
+# ---------------- AES ---------------- #
 
 def encrypt_message(message: bytes, aes_key: bytes) -> bytes:
     cipher = AES.new(aes_key, AES.MODE_CBC)
@@ -29,3 +48,11 @@ def decrypt_message(encrypted_message: bytes, aes_key: bytes) -> bytes:
     ciphertext = raw[16:]
     cipher = AES.new(aes_key, AES.MODE_CBC, iv)
     return unpad(cipher.decrypt(ciphertext), AES.block_size)
+
+# ---------------- HASH ---------------- #
+
+def generate_hash(message: bytes) -> str:
+    return hashlib.sha256(message).hexdigest()
+
+def verify_hash(message: bytes, received_hash: str) -> bool:
+    return generate_hash(message) == received_hash
