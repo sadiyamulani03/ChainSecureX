@@ -1,53 +1,63 @@
 # 🔐 ChainSecureX – Secure Communication System
 
-ChainSecureX is a multi-phase project focused on building a **secure and user-friendly communication system** using networking, modern UI, and advanced cryptography.
+ChainSecureX is a multi-phase project that implements a **secure, real-time communication system** using networking, modern GUI, and advanced cryptographic techniques.
 
 ---
 
-## 🚀 Features Implemented:-
+## 🚀 Features
 
-### 🔹 Phase 1: Multi-Client Chat System (CLI)
+### 🟢 Phase 1: Networking (CLI)
 - TCP socket-based communication
-- Multi-client support using threading
+- Multi-client chat using threading
 - Real-time message broadcasting
 
-### 🔹 Phase 2: Modern GUI Interface
+### 🟢 Phase 2: GUI Interface
 - Built using CustomTkinter
-- Scrollable chat window
-- Message bubbles
+- Chat window with message bubbles
 - Timestamped messages
-- Interactive input field
+- User-friendly interface
 
-### 🔹 Phase 3: Secure Communication Layer (Hybrid Cryptography)
-- AES-based message encryption
-- RSA-based secure key exchange
-- Hybrid encryption model (AES + RSA)
-- End-to-end encrypted communication
+### 🔴 Phase 3: Secure Communication Layer
+- AES encryption for message confidentiality
+- RSA for secure key exchange
+- Hybrid cryptography model
+
+### 🟠 Phase 4: Integrity & Data Protection
+- SHA-256 hashing for message integrity
+- Tamper detection
+- Ensures message authenticity
+
+### 🟣 Phase 5: Identity & Authentication
+- Username-based identity system
+- RSA digital signatures for message authentication
+- Verified sender identity
 
 ---
 
 ## 💻 Tech Stack
+
 - Python
 - Socket Programming
 - Threading
-- CustomTkinter (GUI)
-- AES Encryption (PyCryptodome)
-- RSA Cryptography
+- CustomTkinter
+- AES (Symmetric Encryption)
+- RSA (Asymmetric Encryption)
+- SHA-256 (Hashing)
 
 ---
 
 ## 📁 Project Structure
-
 ChainSecureX/
-│── server/
-│   └── server.py
-│
 │── client/
-│   └── client.py
+│ └── client.py
+│
+│── server/
+│ └── server.py
 │
 │── utils/
-│   ├── protocol.py
-│   └── crypto.py
+│ ├── crypto.py
+│ ├── protocol.py
+│ └── diffie_hellman.py
 
 ---
 
@@ -65,10 +75,22 @@ python -m client.client
 ---
 
 ## 🔐 Security Overview
-- AES is used for fast message encryption
-- RSA is used for secure AES key exchange
-- Messages are encrypted end-to-end
+
+- AES ensures encrypted message transmission
+- RSA secures AES key exchange
+- SHA-256 ensures message integrity
+- Digital signatures verify message authenticity
 - Server only relays encrypted data
+
+---
+
+## 🧠 Cryptography Concepts Implemented
+
+- Symmetric Encryption (AES)
+- Asymmetric Encryption (RSA)
+- Hashing (SHA-256)
+- Digital Signatures
+- Hybrid Cryptographic Model
 
 ---
 ## 📸Demo
@@ -93,9 +115,16 @@ Phase 2:-
 Phase 3:-
 <img width="992" height="705" alt="image" src="https://github.com/user-attachments/assets/6e13c502-1060-4a9e-8e2c-c3f11e1c3418" />
 
+Phase 4 and 5:-
+1.Server and Clients
+<img width="1007" height="736" alt="image" src="https://github.com/user-attachments/assets/d950fca2-2d05-46f6-8d65-b3f9845cd341" />
+
+2.Login
+<img width="770" height="647" alt="image" src="https://github.com/user-attachments/assets/8202f9f5-5df7-4479-af75-53fb00977752" />
+
+<img width="777" height="632" alt="image" src="https://github.com/user-attachments/assets/492961ae-4efe-463d-8b63-6849b7d93d0c" />
+
 
 ## 🔐 Upcoming Phases
-- Diffie-Hellman Secure Key Generation
 - Message Hashing & Integrity
-- Authentication System
 - Blockchain-based Message Chaining
