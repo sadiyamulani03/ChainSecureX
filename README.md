@@ -126,5 +126,6 @@ Phase 4 and 5:-
 
 
 ## 🔐 Upcoming Phases
+- Storage Layer(Database)
 - Message Hashing & Integrity
 - Blockchain-based Message Chaining
