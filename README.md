@@ -32,6 +32,11 @@ ChainSecureX is a multi-phase project that implements a **secure, real-time comm
 - RSA digital signatures for message authentication
 - Verified sender identity
 
+### ⚪ Storage Layer
+- SQLite database integration
+- Persistent chat history
+- Automatic message retrieval
+
 ---
 
 ## 💻 Tech Stack
@@ -57,6 +62,7 @@ ChainSecureX/
 │── utils/
 │ ├── crypto.py
 │ ├── protocol.py
+│ ├── database.py
 │ └── diffie_hellman.py
 
 ---
@@ -81,6 +87,7 @@ python -m client.client
 - SHA-256 ensures message integrity
 - Digital signatures verify message authenticity
 - Server only relays encrypted data
+- SQLite ensures persistent storage
 
 ---
 
@@ -91,6 +98,7 @@ python -m client.client
 - Hashing (SHA-256)
 - Digital Signatures
 - Hybrid Cryptographic Model
+- Database Persistence
 
 ---
 ## 📸Demo
@@ -124,8 +132,14 @@ Phase 4 and 5:-
 
 <img width="777" height="632" alt="image" src="https://github.com/user-attachments/assets/492961ae-4efe-463d-8b63-6849b7d93d0c" />
 
+Phase 6:-
+1. Before Database
+   <img width="956" height="510" alt="image" src="https://github.com/user-attachments/assets/fcbc23d6-23c1-4211-a472-713e63e9d824" />
+
+2. After Database
+   <img width="978" height="518" alt="image" src="https://github.com/user-attachments/assets/eebcea14-7cc1-4fce-aa30-7d2380283b23" />
+ 
 
 ## 🔐 Upcoming Phases
-- Storage Layer(Database)
 - Message Hashing & Integrity
 - Blockchain-based Message Chaining
