@@ -8,12 +8,25 @@ from utils.crypto import (
     generate_rsa_keys,
     decrypt_aes_key,
     encrypt_message,
-    decrypt_message
+    decrypt_message,
+    generate_hash,
+    verify_hash,
+    sign_message
 )
-from utils.diffie_hellman import generate_private_key, generate_public_key, generate_shared_key
+from utils.database import init_db, save_message, load_messages
 
 HOST = '127.0.0.1'
 PORT = 5051
+
+
+def recv_fixed(sock, size):
+    data = b''
+    while len(data) < size:
+        packet = sock.recv(size - len(data))
+        if not packet:
+            return None
+        data += packet
+    return data
 
 
 class ChatApp:
@@ -22,36 +35,37 @@ class ChatApp:
         self.root.title("ChainSecureX Chat")
         self.root.geometry("500x600")
 
-        self.username = input("Enter your username: ")
+        self.username = input("Enter username: ")
 
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client.connect((HOST, PORT))
 
-        # ---------------- RSA ---------------- #
         self.private_key, self.public_key = generate_rsa_keys()
-        self.client.send(self.public_key.export_key())
 
-        encrypted_aes = self.client.recv(4096)
+        # Send username
+        username_bytes = self.username.encode()
+        self.client.send(len(username_bytes).to_bytes(4, 'big'))
+        self.client.send(username_bytes)
+
+        # Send public key
+        key_bytes = self.public_key.export_key()
+        self.client.send(len(key_bytes).to_bytes(4, 'big'))
+        self.client.send(key_bytes)
+
+        # Receive AES key
+        aes_len = int.from_bytes(self.client.recv(4), 'big')
+        encrypted_aes = recv_fixed(self.client, aes_len)
+
         self.aes_key = decrypt_aes_key(encrypted_aes, self.private_key)
 
         print("Secure connection established")
 
-        # ---------------- DIFFIE-HELLMAN ---------------- #
-        client_private = generate_private_key()
-        client_public = generate_public_key(client_private)
+        # Database init
+        init_db()
 
-        # Receive server public key
-        server_public = int(self.client.recv(1024).decode())
-
-        # Send client public key
-        self.client.send(str(client_public).encode())
-
-        shared_key = generate_shared_key(server_public, client_private)
-
-        print(f"DH Shared Key (Client): {shared_key}")
-
-        # ---------------- UI ---------------- #
         self.setup_ui()
+        self.load_old_messages()
+
         threading.Thread(target=self.receive_messages, daemon=True).start()
 
     def setup_ui(self):
@@ -64,13 +78,20 @@ class ChatApp:
         self.send_button = ctk.CTkButton(self.root, text="Send", command=self.send_message)
         self.send_button.pack(side="right", padx=(5, 10), pady=10)
 
-    def add_message(self, message, sender="other"):
-        time = datetime.now().strftime("%H:%M")
+    def load_old_messages(self):
+        messages = load_messages()
+
+        for user, msg, time in messages:
+            self.add_message(f"{user}: {msg}", time)
+
+    def add_message(self, message, timestamp=None):
+        if not timestamp:
+            timestamp = datetime.now().strftime("%H:%M")
 
         frame = ctk.CTkFrame(self.chat_frame)
-        frame.pack(anchor="e" if sender == "me" else "w", pady=5)
+        frame.pack(anchor="w", pady=5)
 
-        label = ctk.CTkLabel(frame, text=f"{message}\n{time}")
+        label = ctk.CTkLabel(frame, text=f"{message}\n{timestamp}")
         label.pack(padx=10, pady=5)
 
     def send_message(self):
@@ -78,26 +99,49 @@ class ChatApp:
         if not msg:
             return
 
-        data = encode_message(self.username, msg)
+        msg_bytes = msg.encode()
+        msg_hash = generate_hash(msg_bytes)
+        signature = sign_message(msg_bytes, self.private_key)
+
+        data = encode_message(self.username, msg, msg_hash, signature)
         encrypted = encrypt_message(data, self.aes_key)
 
+        self.client.send(len(encrypted).to_bytes(4, 'big'))
         self.client.send(encrypted)
 
-        self.add_message(msg, "me")
+        timestamp = datetime.now().strftime("%H:%M")
+
+        save_message(self.username, msg, timestamp)
+
+        self.add_message(f"You: {msg}", timestamp)
         self.entry.delete(0, "end")
 
     def receive_messages(self):
         while True:
             try:
-                encrypted = self.client.recv(4096)
-                if not encrypted:
+                data_len_bytes = self.client.recv(4)
+                if not data_len_bytes:
                     break
+
+                data_len = int.from_bytes(data_len_bytes, 'big')
+                encrypted = recv_fixed(self.client, data_len)
 
                 decrypted = decrypt_message(encrypted, self.aes_key)
                 decoded = decode_message(decrypted)
 
-                if decoded["user"] != self.username:
-                    self.add_message(f"{decoded['user']}: {decoded['msg']}")
+                msg = decoded["msg"]
+                sender = decoded["user"]
+
+                if verify_hash(msg.encode(), decoded["hash"]):
+                    display_msg = f"{sender}: {msg}"
+                else:
+                    display_msg = "Message tampered"
+
+                timestamp = datetime.now().strftime("%H:%M")
+
+                save_message(sender, msg, timestamp)
+
+                self.add_message(display_msg, timestamp)
 
             except Exception as e:
                 print("Error:", e)
