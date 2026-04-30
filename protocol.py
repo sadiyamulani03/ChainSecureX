@@ -13,3 +13,4 @@ def decode_message(data):
     decoded = json.loads(data.decode())
     decoded["sig"] = base64.b64decode(decoded["sig"])
     return decoded
+
