@@ -11,7 +11,7 @@ ChainSecureX is a multi-phase project that implements a **secure, real-time comm
 - Multi-client chat using threading
 - Real-time message broadcasting
 
-### 🟢 Phase 2: GUI Interface
+### 🟡 Phase 2: GUI Interface
 - Built using CustomTkinter
 - Chat window with message bubbles
 - Timestamped messages
@@ -32,10 +32,16 @@ ChainSecureX is a multi-phase project that implements a **secure, real-time comm
 - RSA digital signatures for message authentication
 - Verified sender identity
 
-### ⚪ Storage Layer
+### 🟤 Phase 6: Storage Layer
 - SQLite database integration
 - Persistent chat history
 - Automatic message retrieval
+
+### 🔵 Phase 7: Blockchain Layer
+- Implemented message hashing with SHA-256
+- Linked each message with previous hash
+- Created blockchain-style message chain
+- Ensured tamper-evident chat history
 
 ---
 
@@ -63,7 +69,8 @@ ChainSecureX/
 │ ├── crypto.py
 │ ├── protocol.py
 │ ├── database.py
-│ └── diffie_hellman.py
+| ├── diffie_hellman.py
+│ └── blockchain.py
 
 ---
 
@@ -139,7 +146,5 @@ Phase 6:-
 2. After Database
    <img width="978" height="518" alt="image" src="https://github.com/user-attachments/assets/eebcea14-7cc1-4fce-aa30-7d2380283b23" />
  
-
-## 🔐 Upcoming Phases
-- Message Hashing & Integrity
-- Blockchain-based Message Chaining
+Phase 7:-
+   <img width="936" height="1138" alt="image" src="https://github.com/user-attachments/assets/b051713a-39cd-4276-8638-bf35deb2bef2" />
