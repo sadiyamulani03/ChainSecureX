@@ -1,92 +1,120 @@
 import socket
 import threading
+import json
+import uuid
 from Crypto.Random import get_random_bytes
 from Crypto.PublicKey import RSA
-
 from utils.crypto import encrypt_aes_key
-from utils.diffie_hellman import generate_private_key, generate_public_key, generate_shared_key
 
 HOST = '127.0.0.1'
 PORT = 5051
 
-clients = []
-
-# Shared AES key (Hybrid crypto)
+clients = {}
 GLOBAL_AES_KEY = get_random_bytes(16)
 
+def recv_fixed(conn, size):
+    data = b''
+    while len(data) < size:
+        packet = conn.recv(size - len(data))
+        if not packet:
+            return None
+        data += packet
+    return data
 
-def broadcast(message, sender_conn):
-    for client in clients:
-        if client != sender_conn:
-            try:
-                client.send(message)
-            except:
-                clients.remove(client)
+def broadcast_user_list():
+    user_list = list(clients.keys())
+    payload = json.dumps({
+        "type": "users",
+        "users": user_list
+    }).encode()
 
+    for conn in clients.values():
+        try:
+            conn.sendall(len(payload).to_bytes(4, 'big') + payload)
+        except:
+            pass
 
 def handle_client(conn, addr):
-    print(f"Connected: {addr}")
-
+    username = None
     try:
-        # ---------------- RSA HANDSHAKE ---------------- #
-        client_pub_key_data = conn.recv(4096)
-        client_pub_key = RSA.import_key(client_pub_key_data)
+        # Username
+        username_len = int.from_bytes(recv_fixed(conn, 4), 'big')  # FIX: use recv_fixed for header
+        username = recv_fixed(conn, username_len).decode()
 
-        encrypted_aes_key = encrypt_aes_key(GLOBAL_AES_KEY, client_pub_key)
-        conn.send(encrypted_aes_key)
+        # Public key
+        key_len = int.from_bytes(recv_fixed(conn, 4), 'big')       # FIX: use recv_fixed for header
+        key_data = recv_fixed(conn, key_len)
+        client_pub_key = RSA.import_key(key_data)
 
-        # ---------------- DIFFIE-HELLMAN ---------------- #
-        server_private = generate_private_key()
-        server_public = generate_public_key(server_private)
+        # Send AES key
+        encrypted_aes = encrypt_aes_key(GLOBAL_AES_KEY, client_pub_key)
+        conn.sendall(len(encrypted_aes).to_bytes(4, 'big') + encrypted_aes)  # FIX: sendall avoids partial sends
 
-        # Send server public key
-        conn.send(str(server_public).encode())
-
-        # Receive client public key
-        client_public = int(conn.recv(1024).decode())
-
-        # Generate shared key
-        shared_key = generate_shared_key(client_public, server_private)
-
-        print(f"DH Shared Key (Server): {shared_key}")
+        clients[username] = conn
+        print(f"{username} connected")
+        broadcast_user_list()
 
     except Exception as e:
-        print("Handshake Error:", e)
+        print(f"[Handshake Error] {addr}: {e}")
+        conn.close()
         return
 
     while True:
         try:
-            data = conn.recv(4096)
+            # FIX: use recv_fixed for the 4-byte length header — conn.recv(4) can return 1-3 bytes
+            header = recv_fixed(conn, 4)
+            if not header:
+                break
+
+            data_len = int.from_bytes(header, 'big')
+            data = recv_fixed(conn, data_len)
+
             if not data:
                 break
 
-            broadcast(data, conn)
+            # FIX: Store data as hex so it survives JSON serialization regardless of content type.
+            # This works for BOTH encrypted chat messages AND encrypted file payloads —
+            # the server never needs to inspect the content, just forward it blindly.
+            message_packet = json.dumps({
+                "type": "chat",
+                "id": str(uuid.uuid4()),
+                "data": data.hex()
+            }).encode()
 
-        except:
+            # Broadcast to all other clients
+            for user, client in list(clients.items()):
+                if client != conn:
+                    try:
+                        client.sendall(len(message_packet).to_bytes(4, 'big') + message_packet)
+                    except Exception as e:
+                        print(f"[Broadcast Error] to {user}: {e}")
+
+            # Send seen ACK back to sender
+            ack = json.dumps({"type": "seen"}).encode()
+            conn.sendall(len(ack).to_bytes(4, 'big') + ack)
+
+        except Exception as e:
+            print(f"[Receive Error] {username}: {e}")
             break
 
-    if conn in clients:
-        clients.remove(conn)
+    # Clean up disconnected user
+    if username and username in clients:
+        del clients[username]
+        print(f"{username} disconnected")
+        broadcast_user_list()
 
     conn.close()
-    print(f"Disconnected: {addr}")
-
 
 def start_server():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)  # FIX: allows quick restart without "address in use" error
     server.bind((HOST, PORT))
     server.listen()
-
-    print(f"Server running on {HOST}:{PORT}")
+    print("Server running...")
 
     while True:
         conn, addr = server.accept()
-        clients.append(conn)
-
-        threading.Thread(target=handle_client, args=(conn, addr)).start()
-
+        threading.Thread(target=handle_client, args=(conn, addr), daemon=True).start()
 
 if __name__ == "__main__":
     start_server()
