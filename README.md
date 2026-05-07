@@ -1,61 +1,92 @@
-# 🔐 ChainSecureX – Secure Communication System
+🔐 ChainSecureX
+
+A multi-phase Python project building a secure, real-time chat system from the ground up — layering TCP networking, an encrypted GUI, cryptographic security, digital identity, persistent storage, and a blockchain-verified message chain.
+
+📌 Overview
+ChainSecureX is built phase-by-phase, with each phase adding a new security or feature layer on top of the last. Starting from a basic TCP chat server, the project evolves into a full cryptographic communication system where every message is encrypted, authenticated, signed, stored, and recorded on a tamper-evident blockchain chain.
+This project covers concepts from networking, applied cryptography, GUI development, and blockchain — built entirely in Python.
+
+🚀 Phase-by-Phase Features
+
+🟢 Phase 1 — TCP Networking (CLI)
+
+Multi-client chat server using Python sockets and threading
+Real-time message broadcasting to all connected clients
+
+🟡 Phase 2 — GUI Interface
+
+Built with CustomTkinter
+Chat bubbles with timestamps and a clean user-friendly layout
+
+🔴 Phase 3 — Encrypted Communication
+
+AES (symmetric) for fast message encryption
+RSA (asymmetric) for secure AES key exchange
+Hybrid cryptography model — server never sees plaintext
+
+🟠 Phase 4 — Message Integrity
+
+SHA-256 hashing on every message
+Tamper detection — altered messages are flagged automatically
+
+🟣 Phase 5 — Identity & Authentication
+
+Username-based login system
+RSA digital signatures to verify sender identity on every message
+
+🟤 Phase 6 — Persistent Storage
+
+SQLite database integration
+Chat history is saved and automatically loaded on reconnect
+
+🔵 Phase 7 — Blockchain Layer
+
+Every message is hashed and linked to the previous message's hash
+Creates a tamper-evident chain — any modification breaks the chain
+Full blockchain-style integrity verification for chat history
+
+
+🔐 Security Architecture
+Client A                        Server                        Client B
+   │                               │                               │
+   │──── RSA Key Exchange ────────>│<──── RSA Key Exchange ───────│
+   │                               │                               │
+   │──── AES-Encrypted Message ───>│──── AES-Encrypted Message ──>│
+   │      + SHA-256 Hash           │      (server never decrypts)  │
+   │      + RSA Digital Signature  │                               │
+   │                               │                               │
+   └── Blockchain records each message with hash linkage ──────────┘
+LayerTechnologyPurposeEncryptionAES-256Confidential message transmissionKey ExchangeRSA / Diffie-HellmanSecure AES key distributionIntegritySHA-256Detect message tamperingAuthenticationRSA Digital SignaturesVerify sender identityStorageSQLitePersist encrypted chat historyAudit TrailBlockchain (SHA-256 chain)Tamper-evident message log
+
+💻 Tech Stack
+Language: Python 3.10, Networkingsocket ,threading
+
+GUI custom tkinter
+
+Cryptography pycryptodome (AES, RSA, SHA-256)
+
+Database sqlite3
+
+Key Exchange Diffie-Hellman
+
+
+▶️ Getting Started
+1. Clone the repo
+bashgit clone https://github.com/sadiyamulani03/ChainSecureX.git
+cd ChainSecureX
+2. Install dependencies
+bashpip install customtkinter pycryptodome
+3. Start the server
+bashpython server.py
+4. Launch client(s) — open in separate terminals
+bashpython client.py
+Multiple clients can connect simultaneously. Each gets a unique identity and encrypted session.# 🔐 ChainSecureX – Secure Communication System
 
 ChainSecureX is a multi-phase project that implements a **secure, real-time communication system** using networking, modern GUI, and advanced cryptographic techniques.
 
 ---
 
-## 🚀 Features
 
-### 🟢 Phase 1: Networking (CLI)
-- TCP socket-based communication
-- Multi-client chat using threading
-- Real-time message broadcasting
-
-### 🟡 Phase 2: GUI Interface
-- Built using CustomTkinter
-- Chat window with message bubbles
-- Timestamped messages
-- User-friendly interface
-
-### 🔴 Phase 3: Secure Communication Layer
-- AES encryption for message confidentiality
-- RSA for secure key exchange
-- Hybrid cryptography model
-
-### 🟠 Phase 4: Integrity & Data Protection
-- SHA-256 hashing for message integrity
-- Tamper detection
-- Ensures message authenticity
-
-### 🟣 Phase 5: Identity & Authentication
-- Username-based identity system
-- RSA digital signatures for message authentication
-- Verified sender identity
-
-### 🟤 Phase 6: Storage Layer
-- SQLite database integration
-- Persistent chat history
-- Automatic message retrieval
-
-### 🔵 Phase 7: Blockchain Layer
-- Implemented message hashing with SHA-256
-- Linked each message with previous hash
-- Created blockchain-style message chain
-- Ensured tamper-evident chat history
-
----
-
-## 💻 Tech Stack
-
-- Python
-- Socket Programming
-- Threading
-- CustomTkinter
-- AES (Symmetric Encryption)
-- RSA (Asymmetric Encryption)
-- SHA-256 (Hashing)
-
----
 
 ## 📁 Project Structure
 ChainSecureX/
@@ -148,3 +179,6 @@ Phase 6:-
  
 Phase 7:-
    <img width="936" height="1138" alt="image" src="https://github.com/user-attachments/assets/b051713a-39cd-4276-8638-bf35deb2bef2" />
+
+Phase 8:-
+   <img width="936" height="1138" alt="image" src="https://github.com/user-attachments/assets/1331aafe-a06b-45ca-9702-b34430e47a4e" />
