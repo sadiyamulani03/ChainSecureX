@@ -1,51 +1,82 @@
 🔐 ChainSecureX
 
-A multi-phase Python project building a secure, real-time chat system from the ground up — layering TCP networking, an encrypted GUI, cryptographic security, digital identity, persistent storage, and a blockchain-verified message chain.
+
+
+
+
+
+A multi-phase Python project building a secure, real-time communication system from the ground up — combining TCP networking, GUI development, cryptographic security, digital identity verification, persistent storage, and blockchain-based message integrity.
 
 📌 Overview
-ChainSecureX is built phase-by-phase, with each phase adding a new security or feature layer on top of the last. Starting from a basic TCP chat server, the project evolves into a full cryptographic communication system where every message is encrypted, authenticated, signed, stored, and recorded on a tamper-evident blockchain chain.
-This project covers concepts from networking, applied cryptography, GUI development, and blockchain — built entirely in Python.
+
+ChainSecureX is built phase-by-phase, with each phase introducing a new layer of functionality and security on top of the previous implementation.
+
+Starting from a basic TCP socket chat server, the project evolves into a complete cryptographic communication platform where every message is:
+
+encrypted
+authenticated
+digitally signed
+integrity verified
+persistently stored
+blockchain chained
+
+The project combines concepts from:
+
+Computer Networks
+Cybersecurity
+Applied Cryptography
+Blockchain Concepts
+GUI Development
+Database Systems
+Software Engineering
+
+All implemented entirely in Python.
+
+🎯 Purpose
+
+ChainSecureX was created to explore how modern secure communication systems combine networking, cryptography, authentication, storage, and blockchain-inspired integrity verification into a unified architecture.
+
+The project focuses on practical implementation of security concepts rather than theoretical demonstrations.
 
 🚀 Phase-by-Phase Features
-
 🟢 Phase 1 — TCP Networking (CLI)
-
 Multi-client chat server using Python sockets and threading
-Real-time message broadcasting to all connected clients
-
+Real-time message broadcasting
+Client connection handling
+Concurrent communication support
 🟡 Phase 2 — GUI Interface
-
-Built with CustomTkinter
-Chat bubbles with timestamps and a clean user-friendly layout
-
+Built using CustomTkinter
+Modern chat interface
+Chat bubbles with timestamps
+Improved user interaction
+Better visual communication experience
 🔴 Phase 3 — Encrypted Communication
-
-AES (symmetric) for fast message encryption
-RSA (asymmetric) for secure AES key exchange
-Hybrid cryptography model — server never sees plaintext
-
+AES symmetric encryption for message confidentiality
+RSA asymmetric encryption for secure AES key exchange
+Hybrid cryptographic communication model
+End-to-end encrypted workflow
+Server relays encrypted data without accessing plaintext
 🟠 Phase 4 — Message Integrity
-
-SHA-256 hashing on every message
-Tamper detection — altered messages are flagged automatically
-
+SHA-256 hashing for every transmitted message
+Integrity verification mechanisms
+Tamper detection system
+Automatic validation of message authenticity
 🟣 Phase 5 — Identity & Authentication
-
-Username-based login system
-RSA digital signatures to verify sender identity on every message
-
+Username-based authentication system
+RSA digital signatures
+Sender identity verification
+Authenticated communication workflow
 🟤 Phase 6 — Persistent Storage
-
 SQLite database integration
-Chat history is saved and automatically loaded on reconnect
-
+Encrypted chat history storage
+Automatic message loading on reconnect
+Persistent communication records
 🔵 Phase 7 — Blockchain Layer
-
-Every message is hashed and linked to the previous message's hash
-Creates a tamper-evident chain — any modification breaks the chain
-Full blockchain-style integrity verification for chat history
-
-
+Blockchain-inspired message chaining
+Each message linked to previous message hash
+Tamper-evident audit trail
+Chain integrity validation
+Immutable-style communication history
 🔐 Security Architecture
 Client A                        Server                        Client B
    │                               │                               │
@@ -56,87 +87,92 @@ Client A                        Server                        Client B
    │      + RSA Digital Signature  │                               │
    │                               │                               │
    └── Blockchain records each message with hash linkage ──────────┘
-LayerTechnologyPurposeEncryptionAES-256Confidential message transmissionKey ExchangeRSA / Diffie-HellmanSecure AES key distributionIntegritySHA-256Detect message tamperingAuthenticationRSA Digital SignaturesVerify sender identityStorageSQLitePersist encrypted chat historyAudit TrailBlockchain (SHA-256 chain)Tamper-evident message log
-
+🛡️ Security Layers
+Layer	Technology	Purpose
+Encryption	AES-256	Confidential message transmission
+Key Exchange	RSA / Diffie-Hellman	Secure AES key distribution
+Integrity	SHA-256	Detect message tampering
+Authentication	RSA Digital Signatures	Verify sender identity
+Storage	SQLite	Persist encrypted chat history
+Audit Trail	Blockchain Hash Chain	Tamper-evident message logging
 💻 Tech Stack
-Language: Python 3.10, Networkingsocket ,threading
-
-GUI custom tkinter
-
-Cryptography pycryptodome (AES, RSA, SHA-256)
-
-Database sqlite3
-
-Key Exchange Diffie-Hellman
-
-
-▶️ Getting Started
-1. Clone the repo
-bashgit clone https://github.com/sadiyamulani03/ChainSecureX.git
-cd ChainSecureX
-2. Install dependencies
-bashpip install customtkinter pycryptodome
-3. Start the server
-bashpython server.py
-4. Launch client(s) — open in separate terminals
-bashpython client.py
-Multiple clients can connect simultaneously. Each gets a unique identity and encrypted session.# 🔐 ChainSecureX – Secure Communication System
-
-ChainSecureX is a multi-phase project that implements a **secure, real-time communication system** using networking, modern GUI, and advanced cryptographic techniques.
-
----
-
-
-
-## 📁 Project Structure
+Category	Technology
+Language	Python 3.10
+Networking	socket, threading
+GUI	CustomTkinter
+Cryptography	pycryptodome
+Encryption	AES, RSA
+Hashing	SHA-256
+Database	SQLite3
+Key Exchange	Diffie-Hellman
+CI/CD	GitHub Actions
+📚 Concepts Explored
+Socket Programming
+Concurrent Networking
+Hybrid Cryptography
+AES Encryption
+RSA Encryption
+SHA-256 Hashing
+Digital Signatures
+Blockchain Hash Chaining
+Secure Authentication
+Database Persistence
+GUI Application Development
+CI/CD Pipelines
+Modular Software Architecture
+📂 Project Structure
 ChainSecureX/
-│── client/
-│ └── client.py
 │
-│── server/
-│ └── server.py
+├── client/
+│   └── client.py
 │
-│── utils/
-│ ├── crypto.py
-│ ├── protocol.py
-│ ├── database.py
-| ├── diffie_hellman.py
-│ └── blockchain.py
+├── server/
+│   └── server.py
+│
+├── utils/
+│   ├── crypto.py
+│   ├── protocol.py
+│   ├── database.py
+│   ├── diffie_hellman.py
+│   └── blockchain.py
+│
+├── tests/
+├── docs/
+├── logs/
+├── .github/
+│
+├── requirements.txt
+├── README.md
+└── LICENSE
+▶️ Getting Started
+1️⃣ Clone the Repository
+git clone https://github.com/sadiyamulani03/ChainSecureX.git
 
----
+cd ChainSecureX
+2️⃣ Install Dependencies
+pip install -r requirements.txt
 
-## ▶️ How to Run
+Or manually:
 
-### 1. Install dependencies
 pip install customtkinter pycryptodome
-
-### 2. Start server
+3️⃣ Start the Server
 python -m server.server
-
-### 3. Start client(s)
+4️⃣ Start Client(s)
 python -m client.client
 
----
+Multiple clients can connect simultaneously with secure encrypted sessions.
 
-## 🔐 Security Overview
+🔄 CI/CD Integration
 
-- AES ensures encrypted message transmission
-- RSA secures AES key exchange
-- SHA-256 ensures message integrity
-- Digital signatures verify message authenticity
-- Server only relays encrypted data
-- SQLite ensures persistent storage
+This project uses GitHub Actions for Continuous Integration.
 
----
+Automated workflows currently include:
 
-## 🧠 Cryptography Concepts Implemented
-
-- Symmetric Encryption (AES)
-- Asymmetric Encryption (RSA)
-- Hashing (SHA-256)
-- Digital Signatures
-- Hybrid Cryptographic Model
-- Database Persistence
+Dependency installation
+Multi-version Python testing
+Workflow validation
+Project verification
+CI pipeline automation
 
 ---
 ## 📸Demo
@@ -182,3 +218,9 @@ Phase 7:-
 
 Phase 8:-
    <img width="936" height="1138" alt="image" src="https://github.com/user-attachments/assets/1331aafe-a06b-45ca-9702-b34430e47a4e" />
+-------
+👨‍💻 Author
+
+Sadiya Mulani
+
+Built as a practical exploration of secure communication systems, applied cryptography, networking, and blockchain-inspired integrity verification using Python.
