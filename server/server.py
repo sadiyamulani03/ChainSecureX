@@ -4,7 +4,8 @@ import json
 import uuid
 from Crypto.Random import get_random_bytes
 from Crypto.PublicKey import RSA
-from utils.crypto import encrypt_aes_key
+from crypto_layer.aes_crypto import encrypt_message
+encrypted = encrypt_message(message, key)
 from utils.logger import logger
 
 HOST = '127.0.0.1'
