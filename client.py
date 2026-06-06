@@ -19,7 +19,7 @@ from utils.crypto import (
     generate_hash,
     sign_message
 )
-from utils.database import init_db, save_message, load_messages
+from database import init_db, save_message, load_messages
 from utils.blockchain import calculate_hash
 
 HOST = '127.0.0.1'
